@@ -1,0 +1,61 @@
+<!-- Bài tập: 
+Bài 1: Tạo một ứng dụng quản lý danh sách sinh viên bao gồm:
+Thêm sinh viên (Tên, Tuổi, Lớp)
+Hiển thị danh sách sinh viên trong bảng
+Sửa thông tin sinh viên
+Xoá sinh viên
+Bài 2: Xây dựng ứng dụng web quản lý công việc (todo list) cho phép người dùng:
+Thêm công việc mới
+Hiển thị danh sách công việc
+Đánh dấu hoàn thành
+Sửa nội dung công việc
+Xoá công việc -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+
+    </style>
+</head>
+<body>
+    <div class="bai1">
+<h1>Quản lý danh sách sinh viên</h1>
+<form id="studentForm">
+    <input type="text" id="name" placeholder="Tên" required>
+    <input type="number" id="age" placeholder="Tuổi" required>
+    <input type="text" id="class" placeholder="Lớp" required>
+    <button id ="add" type="submit">Thêm sinh viên</button>
+</form>
+<table id = "studentTable">
+    <thead>
+        <tr>
+            <th>Tên</th>
+            <th>Tuổi</th>
+            <th>Lớp</th>
+            <th>Hành động</th>
+        </tr>
+    <tbody id="studentList">
+        <!-- Danh sách sinh viên sẽ được hiển thị ở đây -->
+    </tbody>
+    </thead>
+</table>
+
+    </div>
+<div class="bai2">
+<h1>Quản lý công việc (Todo List)</h1>
+<form id="taskForm">
+    <input type="text" id="taskInput" placeholder="Nhập công việc" required>
+    <button id="addTask" type="submit">Thêm công việc</button>
+</form>
+
+<ul id="taskList">
+    <!-- Danh sách công việc sẽ được hiển thị ở đây -->
+</ul>
+</div>
+
+<script src ="script.js"></script>
+</body>
+</html>
