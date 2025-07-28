@@ -1,61 +1,81 @@
-<!-- Bài tập: 
-Bài 1: Tạo một ứng dụng quản lý danh sách sinh viên bao gồm:
-Thêm sinh viên (Tên, Tuổi, Lớp)
-Hiển thị danh sách sinh viên trong bảng
-Sửa thông tin sinh viên
-Xoá sinh viên
-Bài 2: Xây dựng ứng dụng web quản lý công việc (todo list) cho phép người dùng:
-Thêm công việc mới
-Hiển thị danh sách công việc
-Đánh dấu hoàn thành
-Sửa nội dung công việc
-Xoá công việc -->
-<!DOCTYPE html>
-<html lang="en">
+<!-- Xây dựng 1 trang HTML cho phép quản lý danh sách nhân viên với các chức năng CRUD:
+
+🎯 Chức năng yêu cầu:
+
+Thêm nhân viên mới
+Hiển thị danh sách nhân viên trong bảng
+Sửa thông tin nhân viên
+Xoá nhân viên khỏi danh sách
+📋 Trường dữ liệu nhân viên:
+
+Trường	Kiểu dữ liệu	Ràng buộc
+Mã nhân viên (id)	Tự sinh (số tăng dần, hoặc timestamp)	
+Họ tên (name)	text, bắt buộc, tối đa 255 ký tự	
+Tuổi (age)	number, tối thiểu 18, tối đa 65	
+Giới tính (gender)	radio: Nam / Nữ	
+Vị trí (position)	select, ví dụ: Kế toán, Lập trình viên, Quản lý	
+Ghi chú (note)	textarea, không bắt buộc, tối đa 300 ký tự	
+📌 Yêu cầu kỹ thuật:
+Viết toàn bộ bằng HTML + CSS (cơ bản) + JavaScript thuần
+Không cần kết nối backend hoặc database, dữ liệu lưu tạm trong biến array
+Có xác nhận khi xóa nhân viên
+Reset form sau khi thêm / sửa
+Danh sách hiển thị trong bảng có các cột:
+
+STT | Mã NV | Họ tên | Tuổi | Giới tính | Vị trí | Ghi chú | Hành động (Sửa / Xoá) --><!DOCTYPE html>
+<html lang="vi">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <style>
-
-    </style>
+    <meta charset="UTF-8" />
+    <title>Quản lý nhân sự</title>
+    <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
-    <div class="bai1">
-<h1>Quản lý danh sách sinh viên</h1>
-<form id="studentForm">
-    <input type="text" id="name" placeholder="Tên" required>
-    <input type="number" id="age" placeholder="Tuổi" required>
-    <input type="text" id="class" placeholder="Lớp" required>
-    <button id ="add" type="submit">Thêm sinh viên</button>
-</form>
-<table id = "studentTable">
-    <thead>
-        <tr>
-            <th>Tên</th>
-            <th>Tuổi</th>
-            <th>Lớp</th>
-            <th>Hành động</th>
-        </tr>
-    <tbody id="studentList">
-        <!-- Danh sách sinh viên sẽ được hiển thị ở đây -->
-    </tbody>
-    </thead>
-</table>
+    <h2>Hệ thống quản lý nhân sự</h2>
 
-    </div>
-<div class="bai2">
-<h1>Quản lý công việc (Todo List)</h1>
-<form id="taskForm">
-    <input type="text" id="taskInput" placeholder="Nhập công việc" required>
-    <button id="addTask" type="submit">Thêm công việc</button>
-</form>
+    <form id="employeeForm">
+        <input type="hidden" id="editingIndex" />
+        <label>Mã NV:</label>
+        <input type="text" id="code" maxlength="20" required />
 
-<ul id="taskList">
-    <!-- Danh sách công việc sẽ được hiển thị ở đây -->
-</ul>
-</div>
+        <label>Họ tên:</label>
+        <input type="text" id="name" maxlength="255" required />
 
-<script src ="script.js"></script>
+        <label>Tuổi:</label>
+        <input type="number" id="age" min="18" max="65" required />
+
+        <label>Giới tính:</label>
+        <select id="gender" required>
+            <option value="">-- Chọn giới tính --</option>
+            <option value="Nam">Nam</option>
+            <option value="Nữ">Nữ</option>
+        </select>
+
+        <label>Vị trí:</label>
+        <input type="text" id="position" maxlength="100" required />
+
+        <label>Ghi chú:</label>
+        <textarea id="note" maxlength="500"></textarea>
+
+        <button type="submit">Lưu nhân viên</button>
+    </form>
+
+    <table id="employeeTable">
+        <thead>
+            <tr>
+                <th>Mã NV</th>
+                <th>Họ tên</th>
+                <th>Tuổi</th>
+                <th>Giới tính</th>
+                <th>Vị trí</th>
+                <th>Ghi chú</th>
+                <th>Hành động</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+    <script src="script.js"></script>
 </body>
+
 </html>
