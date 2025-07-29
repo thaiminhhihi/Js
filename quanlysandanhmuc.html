@@ -1,0 +1,102 @@
+<!-- 
+📄 Trang 2: Quản lý danh mục
+Chức năng yêu cầu:
+Thêm danh mục mới
+Hiển thị danh sách danh mục
+Sửa thông tin danh mục
+Xoá danh mục
+Trường dữ liệu danh mục:
+Tên danh mục (name): kiểu text, bắt buộc, tối đa 255 ký tự
+Số lượng (quantity): kiểu number, bắt buộc, giá trị >= 0
+Ghi chú:
+Tất cả dữ liệu được lưu tạm trong biến array của JavaScript (có thể mở rộng dùng localStorage nếu cần).
+Giao diện có form nhập và bảng hiển thị.
+Hai trang HTML không cần liên kết trực tiếp, nhưng trang sản phẩm cần sử dụng danh sách danh mục đã có. --> 
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+<h1>Quản lý danh mục</h1>
+<form id="categoryForm">
+    <label for="name">Tên danh mục:</label>
+    <input type="text" id="name" name="name" required maxlength="255"><br>
+    <label for="quantity">Số lượng:</label>
+    <input type="number" id="quantity" name="quantity" required min="0"><br>
+    <button type="submit">Thêm danh mục</button>
+</form>
+<table id="categoryTable">
+    <thead>
+        <tr>
+            <th>Tên danh mục</th>
+            <th>Số lượng</th>
+            <th>Hành động</th>
+        </tr>
+    </thead>
+    <tbody id="categoryList">
+        <!-- Danh sách danh mục sẽ được thêm vào đây -->
+    </tbody>
+    </table>
+    </form>
+<script>
+    const categories = []; // Mảng lưu trữ danh mục
+
+    // Hàm để thêm danh mục mới
+    function addCategory(name, quantity) {
+        const category = { name, quantity };
+        categories.push(category);
+        renderCategories();
+    }
+
+    // Hàm để hiển thị danh sách danh mục
+    function renderCategories() {
+        const categoryList = document.getElementById('categoryList');
+        categoryList.innerHTML = ''; // Xoá nội dung cũ
+
+        categories.forEach((category, index) => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${category.name}</td>
+                <td>${category.quantity}</td>
+                <td>
+                    <button onclick="editCategory(${index})">Sửa</button>
+                    <button onclick="deleteCategory(${index})">Xoá</button>
+                </td>
+            `;
+            categoryList.appendChild(row);
+        });
+    }
+
+    // Hàm để xử lý sự kiện thêm danh mục
+    document.getElementById('categoryForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+        const name = document.getElementById('name').value;
+        const quantity = parseInt(document.getElementById('quantity').value, 10);
+        addCategory(name, quantity);
+        this.reset(); // Reset form sau khi thêm
+    });
+
+    // Hàm để sửa danh mục
+    function editCategory(index) {
+        const category = categories[index];
+        document.getElementById('name').value = category.name;
+        document.getElementById('quantity').value = category.quantity;
+        categories.splice(index, 1); // Xoá danh mục cũ
+        renderCategories();
+    }
+
+    // Hàm để xoá danh mục
+    function deleteCategory(index) {
+        categories.splice(index, 1);
+        renderCategories();
+    }
+</script>
+
+
+</body>
+</html>
