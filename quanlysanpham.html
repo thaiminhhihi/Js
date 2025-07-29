@@ -1,0 +1,171 @@
+<!-- Bài tập:📄Trang 1: Quản lý sản phẩm
+Chức năng yêu cầu:
+Thêm sản phẩm mới
+Hiển thị danh sách sản phẩm
+Sửa thông tin sản phẩm
+Xoá sản phẩm
+Trường dữ liệu sản phẩm:
+Tên sản phẩm (name): kiểu text, bắt buộc, tối đa 255 ký tự
+Giá (price): kiểu number, bắt buộc, là số dương
+Danh mục (category): kiểu select, bắt buộc, lấy dữ liệu từ danh sách danh mục có sẵn
+Mô tả (description): kiểu textarea, tối đa 500 ký tự -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+<h1>Quản lý sản phẩm</h1>
+<form id="productForm">
+    <label for="name">Tên sản phẩm:</label>
+    <input type="text" id="name" name="name" required maxlength="255"><br>
+    <label for="price">Giá:</label>
+    <input type="number" id="price" name="price" required min="0"><br>
+    <label for="category">Danh mục:</label>
+    <select id="category" name="category" required>
+        <!-- Danh sách danh mục sẽ được thêm vào đây -->
+    </select><br>
+    <label for="description">Mô tả:</label>
+    <textarea id="description" name="description" maxlength="500"></textarea><br>
+    <button type="submit">Thêm sản phẩm</button>
+</form>
+<table id="productTable">
+    <thead>
+        <tr>
+            <th>Tên sản phẩm</th>
+            <th>Giá</th>
+            <th>Danh mục</th>
+            <th>Mô tả</th>
+            <th>Hành động</th>
+        </tr>
+    </thead>
+    <tbody id="productList">
+        <!-- Danh sách sản phẩm sẽ được thêm vào đây -->
+    </tbody>
+    
+</table>
+<a href="quanlydanhmuc.html">Quản lý danh mục</a>
+<script>
+    // Giả sử danh sách danh mục đã được định nghĩa trong một mảng
+    const categories = [
+        { id: 1, name: 'Điện tử' },
+        { id: 2, name: 'Thời trang' },
+        { id: 3, name: 'Gia dụng' }
+    ];
+
+    // Hàm để hiển thị danh sách danh mục trong select
+    function populateCategories() {
+        const categorySelect = document.getElementById('category');
+        categories.forEach(category => {
+            const option = document.createElement('option');
+            option.value = category.id;
+            option.textContent = category.name;
+            categorySelect.appendChild(option);
+        });
+    }
+
+    // Gọi hàm để hiển thị danh sách danh mục khi trang được tải
+    populateCategories();
+    // Hàm để thêm sản phẩm
+    document.getElementById('productForm').addEventListener('submit', function(event)
+    {
+        event.preventDefault(); // Ngăn chặn hành động mặc định của form
+
+        const name = document.getElementById('name').value;
+        const price = document.getElementById('price').value;
+        const category = document.getElementById('category').value;
+        const description = document.getElementById('description').value;
+
+        // Tạo một hàng mới trong bảng sản phẩm
+        const productList = document.getElementById('productList');
+        const row = productList.insertRow();
+        row.innerHTML = `
+            <td>${name}</td>
+            <td>${price}</td>
+            <td>${category}</td>
+            <td>${description}</td>
+            <td>
+                <button onclick="editProduct(this)">Sửa</button>
+                <button onclick="deleteProduct(this)">Xoá</button>
+            </td>
+        `;
+
+        // Xoá dữ liệu trong form sau khi thêm sản phẩm
+        this.reset();
+    });
+    // Hàm để sửa sản phẩm
+    function editProduct(button) {
+        const row = button.parentElement.parentElement;
+        const name = row.cells[0].textContent;
+        const price = row.cells[1].textContent;
+        const category = row.cells[2].textContent;
+        const description = row.cells[3].textContent;
+
+        // Điền lại dữ liệu vào form
+        document.getElementById('name').value = name;
+        document.getElementById('price').value = price;
+        document.getElementById('category').value = category; // Cần xử lý để chọn đúng option
+        document.getElementById('description').value = description;
+
+        // Xoá hàng cũ
+        row.remove();
+    }
+    // Hàm để xoá sản phẩm
+    function deleteProduct(button) {
+        const row = button.parentElement.parentElement;
+        row.remove();
+    }
+    // Thêm sự kiện cho form để ngăn chặn hành động mặc định
+    document.getElementById('productForm').addEventListener('submit', function(event)
+    {
+        event.preventDefault(); // Ngăn chặn hành động mặc định của form
+    });
+    // Thêm sự kiện cho nút xoá
+    document.getElementById('productTable').addEventListener('click', function(event)
+    {
+        if (event.target.tagName === 'BUTTON') {
+            const action = event.target.textContent;
+            if (action === 'Xoá') {
+                const row = event.target.parentElement.parentElement;
+                row.remove();
+            } else if (action === 'Sửa') {
+                editProduct(event.target);
+            }
+        }
+    });
+    // Thêm sự kiện cho nút sửa
+    document.getElementById('productTable').addEventListener('click', function(event)
+    {
+        if (event.target.tagName === 'BUTTON' && event.target.textContent === 'Sửa') {
+            editProduct(event.target);
+        }
+    });
+    // Thêm sự kiện cho nút xoá
+    document.getElementById('productTable').addEventListener('click', function(event)
+    {
+        if (event.target.tagName === 'BUTTON' && event.target.textContent === 'Xoá') {
+            deleteProduct(event.target);
+        }
+    });
+    // Thêm sự kiện cho form để ngăn chặn hành động mặc định
+    document.getElementById('productForm').addEventListener('submit', function(event)
+    {
+        event.preventDefault(); // Ngăn chặn hành động mặc định của form
+    });
+
+
+
+
+</script>
+
+    
+
+
+
+    <script src="script.js"></script>
+</body>
+</html>
+
